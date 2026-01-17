@@ -18,3 +18,48 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+### Symfony ###
+/.env.local
+/.env.local.php
+/.env.*.local
+
+### Dépendances ###
+/vendor/
+/node_modules/
+
+### Cache / logs ###
+/var/cache/
+/var/log/
+
+### Build ###
+/public/build/
+
+### Tests ###
+/phpunit.xml
+/phpunit.xml.dist
+
+### IDE / OS ###
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+### Symfony local server ###
+/.symfony.local.yaml
+
+### Composer ###
+/composer.phar
+
+### Uploads (si utilisés plus tard) ###
+/public/uploads/
+
+### Messenger (si transport doctrine ou async) ###
+/var/messages/
+
+### Coverage ###
+/coverage/
+
+### PDF temporaires ###
+/var/pdf/
