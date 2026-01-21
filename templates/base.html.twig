@@ -8,12 +8,28 @@
 <body class="container mt-4">
 
 {% if app.request.attributes.get('_route') not in ['app_login', 'app_register'] %}
-    <nav class="mb-4">
+    <nav class="mb-4 d-flex align-items-center gap-2">
         {% if app.user %}
-            Connecté : {{ app.user.email }}
-            <a href="{{ path('app_logout') }}" class="btn btn-sm btn-danger ms-2">Logout</a>
+            <span>
+                Connecté : <strong>{{ app.user.email }}</strong>
+            </span>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('admin_match_new') }}"
+            class="btn btn-sm btn-success ms-2">
+                Ajouter un match
+            </a>
+        {% endif %}
+
+            <a href="{{ path('app_logout') }}"
+               class="btn btn-sm btn-danger ms-2">
+                Logout
+            </a>
         {% else %}
-            <a href="{{ path('app_login') }}" class="btn btn-sm btn-primary">Login</a>
+            <a href="{{ path('app_login') }}"
+               class="btn btn-sm btn-primary">
+                Login
+            </a>
         {% endif %}
     </nav>
 {% endif %}

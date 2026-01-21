@@ -6,8 +6,10 @@ use App\Entity\GameMatch;
 use App\Repository\GameMatchRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\GameMatchType;
 
 #[Route('/admin/matches')]
 class GameMatchController extends AbstractController
@@ -48,5 +50,33 @@ class GameMatchController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('admin_matches_index');
+    }
+
+    #[Route('/new', name: 'admin_match_new')]
+    public function new(
+        Request $request,
+        EntityManagerInterface $em
+    ): Response {
+        $match = new GameMatch();
+        $match->setStatus('scheduled');
+
+        $form = $this->createForm(GameMatchType::class, $match);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($match->getPlayerOne() === $match->getPlayerTwo()) {
+                $this->addFlash('danger', 'Les deux joueurs doivent être différents.');
+            } else {
+                $em->persist($match);
+                $em->flush();
+
+                $this->addFlash('success', 'Match créé avec succès.');
+                return $this->redirectToRoute('admin_matches_index');
+            }
+        }
+
+        return $this->render('admin/match/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
