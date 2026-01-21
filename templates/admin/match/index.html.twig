@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin - Matchs{% endblock %}
+
+{% block body %}
+<h1>Tous les matchs</h1>
+
+<a href="{{ path('admin_matches_conflicts') }}" class="btn btn-warning mb-3">Voir les conflits</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Joueur 1</th>
+            <th>Joueur 2</th>
+            <th>Round</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for match in matches %}
+        <tr>
+            <td>{{ match.playerOne.email }}</td>
+            <td>{{ match.playerTwo.email }}</td>
+            <td>{{ match.round }}</td>
+            <td>{{ match.status }}</td>
+            <td>
+                {% if match.status != 'validated' %}
+                    <a href="{{ path('admin_match_validate', {id: match.id}) }}" class="btn btn-success btn-sm">Valider</a>
+                {% endif %}
+                <a href="{{ path('admin_match_delete', {id: match.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes matchs{% endblock %}
+
+{% block body %}
+<h1>Mes matchs</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Adversaire</th>
+            <th>Round</th>
+            <th>Statut</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for match in matches %}
+        {% set opponent = match.playerOne == app.user ? match.playerTwo : match.playerOne %}
+        <tr>
+            <td>{{ opponent.email }}</td>
+            <td>{{ match.round }}</td>
+            <td>{{ match.status }}</td>
+            <td>
+                {% if match.status == 'scheduled' %}
+                    <a href="{{ path('player_match_result', {id: match.id, result: 'WIN'}) }}" class="btn btn-success btn-sm">WIN</a>
+                    <a href="{{ path('player_match_result', {id: match.id, result: 'LOSS'}) }}" class="btn btn-danger btn-sm">LOSS</a>
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">Aucun match</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
